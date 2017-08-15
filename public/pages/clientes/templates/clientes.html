@@ -30,7 +30,7 @@
                         <tbody>                            
                             <tr ng-repeat="(key, cliente) in Clientes">
                                 <td>
-                                    <a href="">{{ cliente.noCliente }}</a>
+                                    <a href="#/admin/cliente_detalle?noCliente={{cliente.noCliente}}" >{{ cliente.noCliente }}</a>
                                 </td>
                                 <td ng-bind-html="cliente.cli_nombre"></td>
                                 <td ng-bind-html="cliente.cli_apellidos"></td>

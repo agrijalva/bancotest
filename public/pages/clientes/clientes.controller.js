@@ -35,7 +35,21 @@ app.controller("ClientesCtrl", ["$scope", "$location","clienteFactory","filterFi
         clienteFactory.getCatalogo( 'tarjeta' ).then(function(result){
             $scope.tipoTarjeta = result.data;
         });
-    }    
+    }
+
+    $scope.InitDetalle = function(){
+        clienteFactory.getCliente( $scope.GET.noCliente ).then(function(result){
+            $scope.Detalle = result.data[0];
+            console.log( $scope.Detalle );
+
+            clienteFactory.getCuentas( $scope.Detalle.idCliente ).then(function(result){
+                $scope.Cuentas = result.data;
+                console.log( result );
+            });
+        }, function(error){
+            console.log("Error", error);
+        });
+    }
 
     $scope.obtenerClientes = function(  ){
         clienteFactory.obtenerClientes( $scope.DataUser.idEjecutivo ).then(function(result){

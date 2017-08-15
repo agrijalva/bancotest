@@ -1,5 +1,4 @@
 <?php
-// include 'app/model/tbl_medico.class.php';
 
 class Cliente
 {
@@ -20,6 +19,8 @@ class Cliente
 	var $idTipoTarjeta;
 	var $noCliente;
 	var $noTarjeta;
+
+	var $idCliente;
 
 	public function __construct( $Class_Properties = array() ) {
 		$this->Assign_Properties_Values($Class_Properties);
@@ -58,19 +59,6 @@ class Cliente
 
 		return $this->Request( $_response );
 	}
-
-	// cli_apellidos : "Antonio Contreras"
-	// cli_celular : "7654478"
-	// cli_email : "jose@gmail.com"
-	// cli_nombre : "Josefina"
-	// cli_rfc : "JOSE76546879"
-	// cli_telefono : "345689709"
-	// idEjecutivo : "1"
-	// idEstatusCliente : 1
-	// idTipoCuenta : "1"
-	// idTipoTarjeta : "1"
-	// noCliente : 1502774005564
-	// noTarjeta : "2911502774005564"
 
 	public function guardarTarjetahabiente(){
 		$_response['success'] = false;
@@ -170,7 +158,6 @@ class Cliente
 				else{
 					$_response['msg']     	= 'Ocurrio un error al guardar la cuenta';
 				}
-				
 			}
 			else{
 				$_response['msg']     	= 'Ocurrio un error al guardar el cliente';
@@ -179,6 +166,44 @@ class Cliente
 		
 		return $this->Request( $_response );
 	}
+
+	public function getCliente(){
+		$_response['success'] = false;
+		if( empty( $this->noCliente ) ){
+			$_response['msg']     	= 'No se ha especificado el número de cliente.';
+		}
+		else{
+			$params = array('noCliente' => array( 'value' => $this->noCliente, 'type' => 'STRING' ));
+
+			$_result = $this->conn->Query( "SP_OBTENER_CLIENTE", $params );
+
+			$_response = $_result;
+		}
+
+		return $this->Request( $_response );
+	}
+
+	public function getCuentas(){
+		$_response['success'] = false;
+		if( empty( $this->idCliente ) ){
+			$_response['msg']     	= 'No se ha especificado el id del cliente.';
+		}
+		else{
+			$params = array('idCliente' => array( 'value' => $this->idCliente, 'type' => 'STRING' ));
+			$_result = $this->conn->Query( "SP_OBTENER_CUENTAS", $params );
+
+			foreach ($_result as $key => $value) {
+
+				$params_saldo = array('idCuenta' => array( 'value' => $value['idCuenta'], 'type' => 'STRING' ));
+				$_result_saldo = $this->conn->Query( "SP_SALDO_TARJETAS", $params_saldo );
+				$_result[ $key ]['Saldo'] = $_result_saldo[0]['Saldo'];
+			}
+
+			$_response = $_result;
+		}
+
+		return $this->Request( $_response );
+	}	
 
 	public function verificarEmailCliente( $email ){
 		$params = array('email' => array( 'value' => $email, 'type' => 'STRING' ));

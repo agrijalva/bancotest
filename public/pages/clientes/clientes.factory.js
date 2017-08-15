@@ -35,6 +35,30 @@ app.factory( 'clienteFactory', function( $http ){
                     'Content-Type': 'application/json'
                 }
             });
+        },
+        getCliente: function( noCliente ) {
+            return $http({
+                url: Path_Cliente + 'getCliente/',
+                method: "POST",
+                params: {
+                    noCliente: noCliente
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        },
+        getCuentas: function( idCliente ) {
+            return $http({
+                url: Path_Cliente + 'getCuentas/',
+                method: "POST",
+                params: {
+                    idCliente: idCliente
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
     };
 });
