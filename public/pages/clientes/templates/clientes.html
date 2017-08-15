@@ -15,18 +15,32 @@
                 <div class="col-sm-12">
                     <table id="example" class="table table-hover" width="100%">
                         <thead>
-                            <th>Numero de Cliente</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Celular</th>
-                            <th>Estatus</th>
-                            <th>Fecha Registro</th>
-                            <th>&nbsp;</th>
+                            <tr>
+                                <th>Número de Cliente</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>RFC</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Celular</th>
+                                <th>Fecha Registro</th>
+                                <th>Estatus</th>
+                            </tr>
                         </thead>
                         <tbody>                            
-                            
+                            <tr ng-repeat="(key, cliente) in Clientes">
+                                <td>
+                                    <a href="">{{ cliente.noCliente }}</a>
+                                </td>
+                                <td ng-bind-html="cliente.cli_nombre"></td>
+                                <td ng-bind-html="cliente.cli_apellidos"></td>
+                                <td>{{ cliente.cli_rfc }}</td>
+                                <td>{{ cliente.cli_email }}</td>
+                                <td>{{ cliente.cli_telefono }}</td>
+                                <td>{{ cliente.cli_celular }}</td>
+                                <td>{{ cliente.timestamp }}</td>
+                                <td><span class="label label-success">{{ cliente.Estatus }}</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

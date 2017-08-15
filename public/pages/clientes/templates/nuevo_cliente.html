@@ -1,9 +1,9 @@
-<div class="nuevo-agente" ng-init="Init_Nuevo();">
+<div class="nuevo-agente" ng-init="InitNuevo();">
     <div class=jumbotron>
         <div class=container>
             <div class="row"> 
                 <div class="col-sm-12">
-                    <h4>Nuevo cliente</h4>
+                    <h3>Nuevo Tarjetahabiente</h3>
                 </div>
             </div>
             <div class="row"> 
@@ -11,86 +11,81 @@
                     <hr>
                 </div>
             </div>
-            <div class="row"> 
-                <div class="col-sm-8">
-                	<small>Rasón Social</small><br>
-                    <input type="text" class="form-input razon_social" placeholder="" ng-model="cliente.razon">
-                </div>
-                <div class="col-sm-4">
-                    <small>RFC</small><br>
-                    <input type="text" class="form-input" placeholder="" ng-model="cliente.rfc">
-                </div>
-            </div>
-            <br>
-            <div class="row"> 
-                <div class="col-sm-4">
-                    <small>Email</small><br>
-                    <input type="text" class="form-input" placeholder="" ng-model="cliente.email">
-                </div>
-                <div class="col-sm-4">
-                    <small>Teléfono</small><br>
-                    <input type="text" class="form-input" placeholder="" ng-model="cliente.telefono">
-                </div>
-                <div class="col-sm-4">
-                    <small>Celular</small><br>
-                    <input type="text" class="form-input" placeholder="" ng-model="cliente.celular">
-                </div>
-            </div>
-            <br>
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-9">
+                    <h4>Datos del tarjetahabiente</h4>
                     <div class="row">
                         <div class="col-sm-6">
-                            <small>Nombre del Representante</small><br>
-                            <input type="text" class="form-input" placeholder="" ng-model="cliente.nombre">
+                            <small>Nombre</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_nombre">
                         </div>
-                        <div class="col-sm-6">
-                            <small>Tipo de Cliente</small><br>
-                            <select class="form-input" ng-model="cliente.tipo">
-                                <option value="">- Selecione Tipo -</option>
-                                <option ng-repeat="cat in ctc" value="{{ cat.ctc_id }}">{{ cat.ctc_nombre }}</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-12">
-                            <br>
-                            <small class="{{ TotalEje == 0 ? 'warning': '' }}">Asiganción de Ejecutivo</small><br>
-                            <select class="form-input" ng-model="cliente.eje_id">                                
-                                <option ng-repeat="eje in Ejecutivos.data" value="{{ eje.eje_id }}" ng-bind-html="eje.Nombre"></option>
-                            </select>
 
-                            <span class="label label-warning" ng-show="TotalEje==0"> {{ eje_mensaje }} </span>
+                        <div class="col-sm-6">
+                            <small>Apellidos</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_apellidos">
                         </div>
                     </div>
-                </div> 
-                <div class="col-sm-4"> 
-                    <small>Áreas para asesoria</small><br>
-                    <table class="table">
-                        <tr ng-repeat="(key, area) in Areas.data">
-                            <td width="20"> 
-                                <input type="checkbox" ng-change="GetEjecutivos()" ng-model="area.checked" ng-checked="area.checked" id="area_{{ area.ca_id }}">
-                            </td>
-                            <td> <label for="area_{{ area.ca_id }}">{{ area.ca_nombre }}</label> </td>
-                        </tr>
-                    </table>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <small>RFC</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_rfc">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <small>Email</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_email">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <small>Teléfono de casa</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_telefono">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <small>Teléfono Celular</small><br>
+                            <input type="text" class="form-input razon_social" placeholder="" ng-model="TarjetaHabiente.cli_celular">
+                        </div>
+                    </div> <br>
+
+
+                    <h4>Datos de la cuenta</h4>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <small>Tipo de Cuenta</small><br>
+                            <select class="form-input" ng-model="TarjetaHabiente.idTipoCuenta">
+                                <option value="">- Selecione Tipo -</option>
+                                <option ng-repeat="tipo in tipoCuenta" value="{{ tipo.idTipoCuenta }}">{{ tipo.tcu_tipo }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <small>Tipo Tarjeta</small><br>
+                            <select class="form-input" ng-model="TarjetaHabiente.idTipoTarjeta">
+                                <option value="">- Selecione Tipo -</option>
+                                <option ng-repeat="tipo in tipoTarjeta" value="{{ tipo.idTipoTarjeta }}">{{ tipo.ttar_tipo }}</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <br>
-            <br><br><br>
-            <div class="row"> 
-                <div class="col-sm-12">
-                    <div class="pull-right">
-                        <!-- <button type="button" class="btn btn-default" ng-click="getCTC();">
-                            <i class="fa fa-ban"></i> Cancelar
-                        </button> -->
 
+            <div class="row"> 
+                <div class="col-sm-9">
+                    <br><br><br>
+                    <div class="pull-right">
                         <a ui-sref=clientes class="btn btn-default"> <i class="fa fa-ban"></i> Cancelar </a>
 
                         <button type="button" class="btn btn-default" ng-click="SaveCliente()">
-                            <i class="fa fa-plus-circle"></i> Guardar y continuar
+                            <i class="fa fa-plus-circle"></i> Guardar cuentahabiente
                         </button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
