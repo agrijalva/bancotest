@@ -59,6 +59,16 @@ app.factory( 'clienteFactory', function( $http ){
                     'Content-Type': 'application/json'
                 }
             });
+        },
+        guardarTarjeta: function( parametros ) {
+            return $http({
+                url: Path_Cliente + 'guardarTarjeta/',
+                method: "POST",
+                params: parametros,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
     };
 });

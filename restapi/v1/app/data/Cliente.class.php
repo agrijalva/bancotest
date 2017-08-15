@@ -134,7 +134,7 @@ class Cliente
 					$params_deposito = array(
 						'_mov_monto'    	=> array( 'value' => 0,  'type' => 'STRING' ),
 						'_idEjecutivo' 		=> array( 'value' => $this->idEjecutivo,    	  'type' => 'INT' ),
-						'_idCuenta'  		=> array( 'value' => $ResultCliente[0]['lastId'], 'type' => 'INT' ),
+						'_idCuenta'  		=> array( 'value' => $ResultCuenta[0]['lastId'], 'type' => 'INT' ),
 						'_idTipoMovimiento' => array( 'value' => 1, 	  	  				  'type' => 'INT' ),
 						'_idTipoCuenta' 	=> array( 'value' => $this->idTipoCuenta, 	  	  'type' => 'INT' )
 					);
@@ -144,7 +144,7 @@ class Cliente
 					$params_tarjeta = array(
 						'_noTarjeta'    	=> array( 'value' => $this->noTarjeta,	      	  'type' => 'STRING' ),
 						'_idEjecutivo' 		=> array( 'value' => $this->idEjecutivo,    	  'type' => 'INT' ),
-						'_idCuenta'  		=> array( 'value' => $ResultCliente[0]['lastId'], 'type' => 'INT' ),
+						'_idCuenta'  		=> array( 'value' => $ResultCuenta[0]['lastId'], 'type' => 'INT' ),
 						'_idTipoTarjeta' 	=> array( 'value' => $this->idTipoTarjeta, 	  	  'type' => 'INT' )
 					);
 					$_result = $this->conn->Query( "SP_TRAMITAR_TARJETA_SP", $params_tarjeta );
@@ -203,7 +203,72 @@ class Cliente
 		}
 
 		return $this->Request( $_response );
-	}	
+	}
+
+	public function guardarTarjeta(){
+		$_response['success'] = false;
+
+		if( empty( $this->idTipoCuenta ) ){
+			$_response['msg']     	= 'No se ha especificado el tipo de cuenta.';
+		}
+		else if( empty( $this->idTipoTarjeta ) ){
+			$_response['msg']     	= 'No se ha especificado el tipo de tarjeta.';
+		}		
+		else if( empty( $this->idEjecutivo ) ){
+			$_response['msg']     	= 'No se ha especificado el Id del ejecutivo.';
+		}
+		else if( empty( $this->noCliente ) ){
+			$_response['msg']     	= 'No se ha especificado el número de cliente.';
+		}
+		else if( empty( $this->noTarjeta ) ){
+			$_response['msg']     	= 'No se ha especificado el número de tarjeta.';
+		}
+		else if( empty( $this->idCliente ) ){
+			$_response['msg']     	= 'No se ha especificado el id del cliente.';
+		}		
+		else{
+			$params_cuenta = array(
+				'_idEjecutivo'    	=> array( 'value' => $this->idEjecutivo,	      'type' => 'INT' ),
+				'_idCliente' 		=> array( 'value' => $this->idCliente, 'type' => 'INT' ),
+				'_idEstatusCuenta'  => array( 'value' => 1,  		  			 	  'type' => 'INT' ),
+				'_idTipoCuenta' 	=> array( 'value' => $this->idTipoCuenta, 	  	  'type' => 'INT' )
+			);
+			$_result = $this->conn->Query( "SP_NUEVA_CUENTA", $params_cuenta );
+			$ResultCuenta = $_result;
+
+			if( count( $ResultCuenta ) != 0 ){
+				// Registramos el movimiento
+				$params_deposito = array(
+					'_mov_monto'    	=> array( 'value' => 0,  'type' => 'STRING' ),
+					'_idEjecutivo' 		=> array( 'value' => $this->idEjecutivo,    	  'type' => 'INT' ),
+					'_idCuenta'  		=> array( 'value' => $ResultCuenta[0]['lastId'],  'type' => 'INT' ),
+					'_idTipoMovimiento' => array( 'value' => 1, 	  	  				  'type' => 'INT' ),
+					'_idTipoCuenta' 	=> array( 'value' => $this->idTipoCuenta, 	  	  'type' => 'INT' )
+				);
+				$_result = $this->conn->Query( "SP_DEPOSITOS", $params_deposito );					
+
+				// Registramos la tarjeta
+				$params_tarjeta = array(
+					'_noTarjeta'    	=> array( 'value' => $this->noTarjeta,	      	  'type' => 'STRING' ),
+					'_idEjecutivo' 		=> array( 'value' => $this->idEjecutivo,    	  'type' => 'INT' ),
+					'_idCuenta'  		=> array( 'value' => $ResultCuenta[0]['lastId'],  'type' => 'INT' ),
+					'_idTipoTarjeta' 	=> array( 'value' => $this->idTipoTarjeta, 	  	  'type' => 'INT' )
+				);
+				$_result = $this->conn->Query( "SP_TRAMITAR_TARJETA_SP", $params_tarjeta );
+				$ResultTarjeta = $_result;
+
+				if( count( $ResultTarjeta ) != 0 ){
+					$_response['msg']     	= 'Se guardo correctamente el tarjeta habiente';
+					$_response['success']   = true;
+				}
+			}
+			else{
+				$_response['msg']     	= 'Ocurrio un error al guardar la cuenta';
+			}
+		}
+		
+		return $this->Request( $_response );
+	}
 
 	public function verificarEmailCliente( $email ){
 		$params = array('email' => array( 'value' => $email, 'type' => 'STRING' ));

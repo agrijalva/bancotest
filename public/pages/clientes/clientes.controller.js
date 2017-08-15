@@ -22,6 +22,9 @@ app.controller("ClientesCtrl", ["$scope", "$location","clienteFactory","filterFi
         idTipoTarjeta: ''
     };
 
+    $scope.idTipoCuenta  = 0;
+    $scope.idTipoTarjeta = 0;
+
 
     $scope.Init = function(){
         $scope.obtenerClientes();
@@ -49,6 +52,8 @@ app.controller("ClientesCtrl", ["$scope", "$location","clienteFactory","filterFi
         }, function(error){
             console.log("Error", error);
         });
+
+        $scope.InitNuevo();
     }
 
     $scope.obtenerClientes = function(  ){
@@ -62,7 +67,7 @@ app.controller("ClientesCtrl", ["$scope", "$location","clienteFactory","filterFi
     $scope.SaveCliente = function(){
         $scope.TarjetaHabiente.noCliente   = Date.now();
         $scope.TarjetaHabiente.noTarjeta   = '291' + Date.now();
-        $scope.TarjetaHabiente.idEjecutivo = $scope.DataUser.idEjecutivo
+        $scope.TarjetaHabiente.idEjecutivo = $scope.DataUser.idEjecutivo;
 
         clienteFactory.guardarTarjetahabiente( $scope.TarjetaHabiente ).then(function(result){
             $scope.ResCliente = result.data;
@@ -75,4 +80,28 @@ app.controller("ClientesCtrl", ["$scope", "$location","clienteFactory","filterFi
             console.log("Error", error);
         });
     }
+
+    $scope.guardarTarjeta = function(){
+        var parametros = {
+            idTipoCuenta: $scope.idTipoCuenta,
+            idTipoTarjeta: $scope.idTipoTarjeta,
+            idEjecutivo: $scope.DataUser.idEjecutivo,
+            noCliente: $scope.GET.noCliente,
+            noTarjeta: '291' + Date.now(),
+            idCliente: $scope.Detalle.idCliente
+        }
+
+        clienteFactory.guardarTarjeta( parametros ).then(function(result){
+            $scope.ResTarjeta = result.data;
+            swal("Banco de Prueba",$scope.ResTarjeta.msg);
+            if( $scope.ResTarjeta.success ){
+                // $location.path("/admin/clientes");
+                $scope.InitDetalle();
+            }
+            console.log( result );
+        }, function(error){
+            console.log("Error", error);
+        });
+    }
+
 }]);

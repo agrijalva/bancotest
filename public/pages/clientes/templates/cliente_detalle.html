@@ -65,11 +65,45 @@
                     <div class="pull-right">
                         <a ui-sref=clientes class="btn btn-default"> <i class="fa fa-ban"></i> Regresar </a>
 
-                        <button type="button" class="btn btn-default">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                             <i class="fa fa-plus-circle"></i> Tramitar tarjeta
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tramitar Tarjeta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <small>Tipo de Cuenta</small><br>
+                        <select class="form-input" ng-model="idTipoCuenta">
+                            <option ng-repeat="tipo in tipoCuenta" value="{{ tipo.idTipoCuenta }}">{{ tipo.tcu_tipo }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <small>Tipo Tarjeta</small><br>
+                        <select class="form-input" ng-model="idTipoTarjeta">
+                            <option ng-repeat="tipo in tipoTarjeta" value="{{ tipo.idTipoTarjeta }}">{{ tipo.ttar_tipo }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" ng-click="guardarTarjeta();">Guardar Tarjeta</button>
             </div>
         </div>
     </div>
