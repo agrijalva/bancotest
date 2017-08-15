@@ -17,7 +17,7 @@ class Correos
 
 	public function __construct( $Class_Properties = array() ) {
 		// $this->template_path = 'app/assets/';
-		$this->template_path = $_SERVER['DOCUMENT_ROOT'] . '/asesoria/restapi/v1/app/assets/templates/';
+		$this->template_path = $_SERVER['DOCUMENT_ROOT'] . '/restapi/v1/app/assets/templates/';
 		$this->Assign_Properties_Values($Class_Properties);
 		$this->conn = new Connection();
 		$this->Return_Type = 'json';
@@ -55,23 +55,6 @@ class Correos
 
 	private function getTemplete(){
 		$html = file_get_contents( $this->template_path . $this->template . '.html' );
-
-		switch ($this->template) {
-			case 'eje.wellcome':
-				$aux_name = explode(' ', $this->ToName);
-				$html = str_replace('{{ nombre }}', $aux_name[0], $html);
-				$html = str_replace('{{ email }}', $this->ToEmail, $html);
-				$html = str_replace('{{ password }}', $this->password, $html);
-				break;
-
-			case 'cli.wellcome':
-				$aux_name = explode(' ', $this->ToName);
-				$html = str_replace('{{ nombre }}', $aux_name[0], $html);
-				$html = str_replace('{{ email }}', $this->ToEmail, $html);
-				$html = str_replace('{{ password }}', $this->password, $html);
-				break;
-		}
-
 		return $html;
 	}
 

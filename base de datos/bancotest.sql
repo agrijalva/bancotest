@@ -24,13 +24,13 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_BENEFICIARIOS` (`idCliente` INT)  BEGIN
+CREATE PROCEDURE `SP_BENEFICIARIOS` (`idCliente` INT)  BEGIN
 	SELECT BEN.*, `rel_tipo` as Relacion  FROM `beneficiario` BEN
 	INNER JOIN `tiporelacion` REL ON BEN.idRelacion = REL.idRelacion
 	WHERE `idCliente` = idCliente;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_BUSCAR_CUENTA` (`tipo` INT, `numero` VARCHAR(16) CHARSET utf8)  BEGIN
+CREATE PROCEDURE `SP_BUSCAR_CUENTA` (`tipo` INT, `numero` VARCHAR(16) CHARSET utf8)  BEGIN
 
 	IF(tipo = 1)THEN -- Por Numero de cuenta
 		SELECT *
@@ -46,7 +46,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_BUSCAR_CUENTA` (`tipo` INT, `num
     END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CATALOGOS` (`catalogo` VARCHAR(15) CHARSET utf8)  BEGIN
+CREATE PROCEDURE `SP_CATALOGOS` (`catalogo` VARCHAR(15) CHARSET utf8)  BEGIN
 	SET @tabla = CONCAT('tipo', catalogo);
     SET @Query = CONCAT('SELECT * FROM ', @tabla);
         
@@ -55,7 +55,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CATALOGOS` (`catalogo` VARCHAR(1
 	DEALLOCATE PREPARE result;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_DEPOSITOS` (`_mov_monto` FLOAT, `_idEjecutivo` INT, `_idCuenta` INT, `_idTipoMovimiento` INT, `_idTipoCuenta` INT)  BEGIN
+CREATE PROCEDURE `SP_DEPOSITOS` (`_mov_monto` FLOAT, `_idEjecutivo` INT, `_idCuenta` INT, `_idTipoMovimiento` INT, `_idTipoCuenta` INT)  BEGIN
 	IF( _idTipoMovimiento = 1 ) THEN
 		SET _mov_monto = (SELECT tcu_monto_apertura FROM tipocuenta WHERE idTipoCuenta = _idTipoCuenta);
     END IF;
@@ -65,7 +65,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_DEPOSITOS` (`_mov_monto` FLOAT, 
     SELECT 1 as success, 'Se inserto de manera correcta' as msg;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LOGIN` (`usuario` VARCHAR(255) CHARSET utf8, `pass` VARCHAR(255) CHARSET utf8, `tipousuario` INT)  BEGIN
+CREATE PROCEDURE `SP_LOGIN` (`usuario` VARCHAR(255) CHARSET utf8, `pass` VARCHAR(255) CHARSET utf8, `tipousuario` INT)  BEGIN
 	IF(tipousuario = 4)THEN -- Cliente
 		SELECT * FROM usuario USU
         INNER JOIN cliente CLI ON cli_email = usu_usuario
@@ -81,7 +81,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LOGIN` (`usuario` VARCHAR(255) C
     END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_MOVIMIENTOS` (`noTarjeta` VARCHAR(16) CHARSET utf8, `fechaInicio` VARCHAR(10) CHARSET utf8, `fechaFin` VARCHAR(10) CHARSET utf8)  BEGIN
+CREATE PROCEDURE `SP_MOVIMIENTOS` (`noTarjeta` VARCHAR(16) CHARSET utf8, `fechaInicio` VARCHAR(10) CHARSET utf8, `fechaFin` VARCHAR(10) CHARSET utf8)  BEGIN
 	SELECT * FROM movimientos MOV
 	INNER JOIN cuenta CUE ON CUE.idCuenta = MOV.idCuenta
 	INNER JOIN tarjeta TAR ON TAR.idCuenta = MOV.idCuenta
@@ -90,30 +90,30 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_MOVIMIENTOS` (`noTarjeta` VARCHA
 		  AND (MOV.timestamp BETWEEN fechaInicio AND fechaFin);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NUEVA_CUENTA` (`_idEjecutivo` INT, `_idCliente` INT, `_idEstatusCuenta` INT, `_idTipoCuenta` INT)  BEGIN
+CREATE PROCEDURE `SP_NUEVA_CUENTA` (`_idEjecutivo` INT, `_idCliente` INT, `_idEstatusCuenta` INT, `_idTipoCuenta` INT)  BEGIN
 	INSERT INTO cuenta(idEjecutivo, idCliente, idEstatusCuenta, idTipoCuenta) VALUE(_idEjecutivo, _idCliente, _idEstatusCuenta, _idTipoCuenta);
     
     SELECT LAST_INSERT_ID() as lastId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_OBTENER_CLIENTE` (`_noCliente` VARCHAR(15) CHARSET utf8)  BEGIN
+CREATE PROCEDURE `SP_OBTENER_CLIENTE` (`_noCliente` VARCHAR(15) CHARSET utf8)  BEGIN
 	SELECT * FROM cliente CLI WHERE noCliente = _noCliente;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_OBTENER_CLIENTES` (`_idEjecutivo` INT)  BEGIN
+CREATE PROCEDURE `SP_OBTENER_CLIENTES` (`_idEjecutivo` INT)  BEGIN
 	SELECT CLI.*, ECL.`esc_estatus` as Estatus FROM `cliente` CLI
 	INNER JOIN `estatuscliente` ECL ON CLI.`idEstatusCliente` = ECL.`idEstatusCliente`
 	WHERE `idEjecutivo` = _idEjecutivo;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_OBTENER_CUENTAS` (`_idCliente` INT)  BEGIN
+CREATE PROCEDURE `SP_OBTENER_CUENTAS` (`_idCliente` INT)  BEGIN
 	SELECT *
 	FROM cuenta CUE
 	INNER JOIN tarjeta TAR ON CUE.idCuenta = TAR.idCuenta
     WHERE CUE.idCliente  = _idCliente;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_REGISTRAR_CLIENTE` (`_noCliente` VARCHAR(100) CHARSET utf8, `_cli_nombre` VARCHAR(100) CHARSET utf8, `_cli_apellidos` VARCHAR(100) CHARSET utf8, `_cli_rfc` VARCHAR(12) CHARSET utf8, `_cli_email` VARCHAR(150) CHARSET utf8, `_cli_telefono` VARCHAR(15) CHARSET utf8, `_cli_celular` VARCHAR(15) CHARSET utf8, `_idEjecutivo` INT)  BEGIN
+CREATE PROCEDURE `SP_REGISTRAR_CLIENTE` (`_noCliente` VARCHAR(100) CHARSET utf8, `_cli_nombre` VARCHAR(100) CHARSET utf8, `_cli_apellidos` VARCHAR(100) CHARSET utf8, `_cli_rfc` VARCHAR(12) CHARSET utf8, `_cli_email` VARCHAR(150) CHARSET utf8, `_cli_telefono` VARCHAR(15) CHARSET utf8, `_cli_celular` VARCHAR(15) CHARSET utf8, `_idEjecutivo` INT)  BEGIN
 	DECLARE _key VARCHAR(60);
     DECLARE lastId INT;
     SET _key  = MD5(NOW());
@@ -125,12 +125,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_REGISTRAR_CLIENTE` (`_noCliente`
     SELECT 1 as success, 'Se inserto de manera correcta' as msg, lastId as lastId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_REGISTRA_BENEFICIARIO` (`ben_nombre` VARCHAR(150) CHARSET utf8, `ben_telefono` VARCHAR(15) CHARSET utf8, `ben_email` VARCHAR(100) CHARSET utf8, `idCliente` INT, `idRelacion` INT)  BEGIN
+CREATE PROCEDURE `SP_REGISTRA_BENEFICIARIO` (`ben_nombre` VARCHAR(150) CHARSET utf8, `ben_telefono` VARCHAR(15) CHARSET utf8, `ben_email` VARCHAR(100) CHARSET utf8, `idCliente` INT, `idRelacion` INT)  BEGIN
 	INSERT INTO cliente(`ben_nombre`, `ben_telefono`, `ben_email`, `idCliente`, `idRelacion`) VALUES( ben_nombre, ben_telefono, ben_email, idCliente, idRelacion );
     SELECT 1 as success, 'Se inserto de manera correcta' as msg, LAST_INSERT_ID() as lastId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SALDO_TARJETAS` (`_idCuenta` INT)  BEGIN
+CREATE PROCEDURE `SP_SALDO_TARJETAS` (`_idCuenta` INT)  BEGIN
 	SET @Cargo = (SELECT SUM(`mov_monto`) as Cargo FROM `movimientos` WHERE `idCuenta` = _idCuenta AND `mov_cargo` = 1);
 	SET @Abono = (SELECT SUM(`mov_monto`) as Abono FROM `movimientos` WHERE `idCuenta` = _idCuenta AND `mov_cargo` = 0);
     
@@ -145,12 +145,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SALDO_TARJETAS` (`_idCuenta` INT
 	SELECT @Saldo AS Saldo;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TRAMITAR_TARJETA_SP` (`_noTarjeta` VARCHAR(16) CHARSET utf8, `_idEjecutivo` INT, `_idCuenta` INT, `_idTipoTarjeta` INT)  BEGIN
+CREATE PROCEDURE `SP_TRAMITAR_TARJETA_SP` (`_noTarjeta` VARCHAR(16) CHARSET utf8, `_idEjecutivo` INT, `_idCuenta` INT, `_idTipoTarjeta` INT)  BEGIN
     INSERT INTO tarjeta(`noTarjeta`, `idEjecutivo`, `idCuenta`, `idTipoTarjeta`) VALUES( _noTarjeta, _idEjecutivo, _idCuenta, _idTipoTarjeta );
     SELECT 1 as success, 'Se inserto de manera correcta' as msg, LAST_INSERT_ID() as lastId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TRANSFERENCIA` (`mov_monto` VARCHAR(16) CHARSET utf8, `idEjecutivo` INT, `idCuentaOrigen` INT, `idCuentaDestino` INT)  BEGIN
+CREATE PROCEDURE `SP_TRANSFERENCIA` (`mov_monto` VARCHAR(16) CHARSET utf8, `idEjecutivo` INT, `idCuentaOrigen` INT, `idCuentaDestino` INT)  BEGIN
 	DECLARE lastID INT;
     
 	INSERT INTO tarjeta(`mov_monto`, `idEjecutivo`, `mov_relacion`, `mov_cargo`, `idCuenta`, `idTipoMovimiento`) 
@@ -164,7 +164,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TRANSFERENCIA` (`mov_monto` VARC
     SELECT 1 as success, 'Se inserto de manera correcta' as msg, lastID as lastId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_VERIFICAR_EMAIL_CLIENTE` (`email` VARCHAR(150) CHARSET utf8)  BEGIN
+CREATE PROCEDURE `SP_VERIFICAR_EMAIL_CLIENTE` (`email` VARCHAR(150) CHARSET utf8)  BEGIN
 	SELECT idCliente FROM cliente
 	WHERE cli_email = email;
 END$$
