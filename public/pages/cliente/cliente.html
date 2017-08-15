@@ -1,0 +1,63 @@
+<div class="nuevo-agente" ng-init="InitDetalle();">
+    <div class=jumbotron>
+        <div class=container>
+            <div class="row"> 
+                <div class="col-sm-12">
+                    <h3>{{ Detalle.cli_nombre }} {{ Detalle.cli_apellidos }}</h3>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-4">
+                    <h4>Información</h4>
+                    <table class="table">
+                        <tr>
+                            <th width="40%">Número de Cliente</th>
+                            <td>{{ Detalle.noCliente }}</td>
+                        </tr>
+                        <tr>
+                            <th>RFC</th>
+                            <td>{{ Detalle.cli_rfc }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ Detalle.cli_email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Teléfono</th>
+                            <td>{{ Detalle.cli_telefono }}</td>
+                        </tr>
+                        <tr>
+                            <th>Celular</th>
+                            <td>{{ Detalle.cli_celular }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de registro</th>
+                            <td>{{ Detalle.timestamp }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-1">&nbsp;</div>
+                <div class="col-sm-7">
+                    <h4>Cuentas</h4>
+                    <table class="table">
+                        <tr>
+                            <th>Número de Cuenta</th>
+                            <th>Número de tarjeta</th>
+                            <th>Saldo</th>
+                        </tr>
+                        <tr ng-repeat="(key, cuenta) in Cuentas">
+                            <td>{{cuenta.idCuenta}}</td>
+                            <td>{{cuenta.noTarjeta}}</td>
+                            <td>{{cuenta.Saldo | currency}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

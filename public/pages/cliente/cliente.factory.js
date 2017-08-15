@@ -1,6 +1,6 @@
 var Path_Cliente = API_Path + '/cliente/';
 
-app.factory( 'depositoFactory', function( $http ){
+app.factory( 'panelFactory', function( $http ){
 	return {
         buscarCuenta: function( tipo, numero ) {
             return $http({

@@ -72,7 +72,7 @@ app.controller("LoginCtrl", ["$scope", "$location","loginFactory", function($sco
                 if( Resultado.success ){
                     localStorage.setItem("Data_User", JSON.stringify(Resultado.data[0]));
                     localStorage.setItem("TipoUser", 4);
-                    $location.path("/admin/clientes");
+                    $location.path("/admin/panel");
                 }
                 else{
                     alert( Resultado.msg );

@@ -61,11 +61,17 @@ var app = angular.module("yapp", ["ui.router", "ngAnimate", "ngSanitize","ui.car
         templateUrl: "pages/depositos/depositos.html",
         controller: "DepositoCtrl"
     })
+    .state("panel", {
+        url: "/panel",
+        parent: "admin",
+        cache:false,
+        templateUrl: "pages/cliente/cliente.html",
+        controller: "ClienteCtrl"
+    })
 }]);
 
 var API_Path = "http://localhost/bancotest/restapi/v1/index.php"
 // var API_Path = "http://pfiscal.nutricionintegral.com.mx/asesoria/restapi/v1/index.php"
-var Authorization = 'eb60959f5eac3e1d081244c33d4fb850';
 
 angular.module("yapp").controller("DashboardCtrl", ["$scope", "$state", function(r, t) {
     r.$state = t
