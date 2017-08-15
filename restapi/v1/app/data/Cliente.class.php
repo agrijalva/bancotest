@@ -22,6 +22,12 @@ class Cliente
 
 	var $idCliente;
 
+	var $tipo;
+	var $numero;
+
+	var $mov_monto;
+	var $idCuenta;
+
 	public function __construct( $Class_Properties = array() ) {
 		$this->Assign_Properties_Values($Class_Properties);
 		$this->conn = new Connection();
@@ -267,6 +273,56 @@ class Cliente
 			}
 		}
 		
+		return $this->Request( $_response );
+	}
+
+	public function buscarCuenta(){
+		$_response['success'] = false;
+		if( empty( $this->tipo ) ){
+			$_response['msg']     	= 'No se ha especificado tipo de busqueda.';
+		}
+		else if( empty( $this->numero ) ){
+			$_response['msg']     	= 'No se ha especificado el número de búsqueda.';
+		}
+		else{
+			$params = array(
+				'tipo'    	=> array( 'value' => $this->tipo,	 'type' => 'INT' ),
+				'numero' 	=> array( 'value' => $this->numero,  'type' => 'STRING' )
+			);
+
+			$_result = $this->conn->Query( "SP_BUSCAR_CUENTA", $params );
+
+			$_response = $_result[0];
+		}
+
+		return $this->Request( $_response );
+	}
+
+	public function deposito(){
+		$_response['success'] = false;
+		if( empty( $this->mov_monto ) ){
+			$_response['msg']     	= 'No se ha especificado el monto a depositar.';
+		}
+		else if( empty( $this->idEjecutivo ) ){
+			$_response['msg']     	= 'No se ha especificado el id del ejecutivo.';
+		}
+		else if( empty( $this->idCuenta ) ){
+			$_response['msg']     	= 'No se ha especificado el número de cuenta.';
+		}
+		else{
+			$params = array(
+				'_mov_monto'    	=> array( 'value' => $this->mov_monto,	 'type' => 'INT' ),
+				'_idEjecutivo'    	=> array( 'value' => $this->idEjecutivo,	 'type' => 'INT' ),
+				'_idCuenta'    		=> array( 'value' => $this->idCuenta,	 'type' => 'INT' ),
+				'_idTipoMovimiento' => array( 'value' => 2,	 'type' => 'INT' ),
+				'_idTipoCuenta' 	=> array( 'value' => 0,  'type' => 'STRING' )
+			);
+
+			$_result = $this->conn->Query( "SP_DEPOSITOS", $params );
+
+			$_response = $_result[0];
+		}
+
 		return $this->Request( $_response );
 	}
 

@@ -1,15 +1,29 @@
 "use strict";
 var app = angular.module("yapp", ["ui.router", "ngAnimate", "ngSanitize","ui.carousel"]).config(["$stateProvider", "$urlRouterProvider", function(r, t) {
-    t.when("/admin", "/admin/overview"), t.otherwise("/login"), r.state("base", {
+    t.when("/admin", "/admin/overview"), t.otherwise("/ejecutivo"), r.state("base", {
         "abstract": !0,
         url: "",
         templateUrl: "pages/base.html"
     })
-    .state("login", {
-        url: "/login",
+    .state("ejecutivo", {
+        url: "/ejecutivo",
         parent: "base",
         cache:false,
-        templateUrl: "pages/login/login.html",
+        templateUrl: "pages/login/ejecutivo.html",
+        controller: "LoginCtrl"
+    })
+    .state("cajero", {
+        url: "/cajero",
+        parent: "base",
+        cache:false,
+        templateUrl: "pages/login/cajero.html",
+        controller: "LoginCtrl"
+    })
+    .state("cliente", {
+        url: "/cliente",
+        parent: "base",
+        cache:false,
+        templateUrl: "pages/login/cliente.html",
         controller: "LoginCtrl"
     })
     .state("admin", {
@@ -17,7 +31,7 @@ var app = angular.module("yapp", ["ui.router", "ngAnimate", "ngSanitize","ui.car
         parent: "base",
         cache:false,
         templateUrl: "pages/admin.html",
-        controller: "DashboardCtrl"
+        controller: "AdminCtrl"
     })
     .state("clientes", {
         url: "/clientes",
@@ -39,6 +53,13 @@ var app = angular.module("yapp", ["ui.router", "ngAnimate", "ngSanitize","ui.car
         cache:false,
         templateUrl: "pages/clientes/templates/cliente_detalle.html",
         controller: "ClientesCtrl"
+    })
+    .state("depositos", {
+        url: "/depositos",
+        parent: "admin",
+        cache:false,
+        templateUrl: "pages/depositos/depositos.html",
+        controller: "DepositoCtrl"
     })
 }]);
 
