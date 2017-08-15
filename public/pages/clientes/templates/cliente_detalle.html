@@ -1,0 +1,101 @@
+<div class="nuevo-agente" ng-init="Init_Detalle();">
+    <div class=jumbotron>
+        <div class=container>
+            <div class="row"> 
+                <div class="col-sm-12">
+                    <h4>Editar cliente</h4>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col-sm-8">
+                	<small>Rasón Social</small><br>
+                    <input type="text" class="form-input razon_social" placeholder="" ng-model="cliente.razon">
+                </div>
+                <div class="col-sm-4">
+                    <small>RFC</small><br>
+                    <input type="text" class="form-input" placeholder="" ng-model="cliente.rfc">
+                </div>
+            </div>
+            <br>
+            <div class="row"> 
+                <div class="col-sm-4">
+                    <small>Email</small><br>
+                    <input type="text" class="form-input" placeholder="" ng-model="cliente.email">
+                </div>
+                <div class="col-sm-4">
+                    <small>Teléfono</small><br>
+                    <input type="text" class="form-input" placeholder="" ng-model="cliente.telefono">
+                </div>
+                <div class="col-sm-4">
+                    <small>Celular</small><br>
+                    <input type="text" class="form-input" placeholder="" ng-model="cliente.celular">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <small>Nombre del Representante</small><br>
+                            <input type="text" class="form-input" placeholder="" ng-model="cliente.nombre">
+                        </div>
+                        <div class="col-sm-6">
+                            <small>Tipo de Cliente</small><br>
+                            <select class="form-input" ng-model="cliente.tipo">
+                                <option value="">- Selecione Tipo -</option>
+                                <option ng-repeat="cat in ctc" value="{{ cat.ctc_id }}">{{ cat.ctc_nombre }}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <br>
+                            <small class="{{ TotalEje == 0 ? 'warning': '' }}">Asiganción de Ejecutivo</small><br>
+
+                            <select class="form-input" ng-model="cliente.eje_id">
+                                <option ng-repeat="eje in Ejecutivos.data"
+                                        value="{{ eje.eje_id }}"
+                                        ng-selected="eje.Selected == 1"
+                                        ng-bind-html="eje.Nombre"></option>
+                            </select>
+                             <!-- ng-selected="eje.eje_id == cliente.eje_id" -->
+
+                            <span class="label label-warning" ng-show="TotalEje==0"> {{ eje_mensaje }} </span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-sm-4"> 
+                    <small>Áreas para asesoria</small><br>
+                    <table class="table">
+                        <tr ng-repeat="(key, area) in Areas.data">
+                            <td width="20"> 
+                                <input type="checkbox" ng-change="GetEjecutivos()" ng-model="area.checked" ng-checked="area.checked" id="area_{{ area.ca_id }}">
+                            </td>
+                            <td> <label for="area_{{ area.ca_id }}">{{ area.ca_nombre }}</label> </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <br><br><br>
+            <div class="row"> 
+                <div class="col-sm-12">
+                    <div class="pull-right">
+                        <!-- <button type="button" class="btn btn-default" ng-click="getCTC();">
+                            <i class="fa fa-ban"></i> Cancelar
+                        </button> -->
+
+                        <a ui-sref=clientes class="btn btn-default"> <i class="fa fa-ban"></i> Cancelar </a>
+
+                        <button type="button" class="btn btn-default" ng-click="actualizaCliente()">
+                            <i class="fa fa-plus-circle"></i> Actualizar cliente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

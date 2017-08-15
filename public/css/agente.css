@@ -1,0 +1,89 @@
+.ag-item{	
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px 0;
+	margin-bottom: 15px;
+}
+
+.ag-item:hover{
+	background-color: #f4f4f4;
+}
+
+.ag-item img{
+	margin: 0 auto;
+}
+
+.ag-name{
+	text-align: center;
+}
+
+.text-green{
+	color: #2fab79;
+}
+
+.text-gray{
+	color: #ccc;
+}
+
+.nav-stacked{
+	margin-top: 15px;
+}
+
+.nav-stacked li{
+	background-color: #fff;
+	padding: 15px 10px;
+}
+
+.ag-item:hover > .nav-stacked li{
+	background-color: #3ca2e0;
+	color: white;
+}
+
+.img-circle{
+	border: solid 3px #e4e4e4 !important;
+}
+
+.regresar{
+	font-size: 50px !important;
+}
+
+.table{
+	font-size: 13px;
+}
+
+.agente-detalle .fa-star{
+	font-size: 20px !important;
+	color: orange !important;
+}
+
+.eje-options{
+	margin-top: 50px !important;
+}
+
+.form-input{
+	border: none; 
+	width: 100%; 
+	font-size: 18px; 
+	border-bottom: solid 1px #f4f4f4;
+}
+
+.form-input:focus{ 
+	outline: none; 
+	border-bottom: solid 1px #3ca2e0;
+}
+
+.nuevo-agente small{
+	color: #3ca2e0;
+}
+
+.warning{
+	color: #f2a007 !important;
+}
+
+.form-input::-webkit-input-placeholder,
+.form-input::-moz-placeholder,
+.form-input:-ms-input-placeholder,
+.form-input:-moz-placeholder {  
+  color: pink;
+}

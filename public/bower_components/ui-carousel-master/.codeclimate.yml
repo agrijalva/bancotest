@@ -1,0 +1,28 @@
+---
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: true
+    checks:
+      complexity:
+        enabled: false
+  fixme:
+    enabled: false
+ratings:
+  paths:
+  - "**.js"
+exclude_paths:
+- dist/
+- node_modules/
+- bower_components/
+- _gh_pages/
+- .tmp/
+- test/
+- src/demo/
+- gulpfile.js
